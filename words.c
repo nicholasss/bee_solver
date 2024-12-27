@@ -27,7 +27,11 @@ int uniqueLetters(int len, char *letters) {
 	int unique = 1; // remains true unless same letter found
 	for (int i = 0; i < len; i++) {
 		for (int j = 0; j < len; j++) {
-			if (letters[i] == letters[j]) {
+			if (i == j) {
+				// comparing the same letter skips to next loop
+				continue;
+			} else if (letters[i] == letters[j]) {
+				printf(" FOUND: letter %c and %c are the same.\n", letters[i], letters[j]);
 				unique = 0; // false
 			}
 		}
