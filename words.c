@@ -3,11 +3,12 @@
 #include <string.h>
 
 // Structure Signatures
-typedef struct Node trieNode;
+typedef struct trieNode trieNode;
 
 // Structures Definitions
 struct trieNode {
 	char letter;
+	int numLetters;
 	trieNode *followingLetters;
 };
 
@@ -15,8 +16,10 @@ struct trieNode {
 void printHelp();
 int uniqueLetters(int strlen, char *letters);
 trieNode *initTrie();
+void printTrie(trieNode *trie);
 void freeTrie(trieNode *trie);
-void addTrieLetter(char letter);
+void r_freeTrie(trieNode *node, int numLetters);
+void addTrieLetter(char letter, trieNode *onNode);
 
 // Function definitions
 void printHelp() {
@@ -55,16 +58,47 @@ int uniqueLetters(int len, char *letters) {
 }
 
 trieNode *initTrie() {
+	// Initialize with root of trie as '@'
+	size_t trieSize = sizeof(trieNode);
+	trieNode *trie = malloc(trieSize);
+	trie->letter = '@';
+	return trie;
+}
 
-	return NULL;
+void printTrie(trieNode *trie) {
+	// prints tree
 }
 
 void freeTrie(trieNode *trie) {
+	// TODO: TEST
+	// Up to seven nodes under root, then undetermined branches
+	for (int i = 0; i < 7; i++) {
+		// look through 7 nodes attached to root
+		if (trie->followingLetters + i == NULL) {
+			continue;
+		}
+		
+		r_freeTrie(trie->followingLetters, trie->numLetters);
 
+	}
 }
 
-void addTrieLetter(char letter) {
+void r_freeTrie(trieNode *node, int numLetters) {
+	// TODO: TEST
+	// is called recursively to free the nodes
+	for (int i = 0; i < numLetters; i++) {
+		if (node->followingLetters + 1 == NULL) {
+			continue;
+		} else if (node->numLetters == 0) {
+			free(node);
+		} else {
+			r_freeTrie(node->followingLetters, node->numLetters);
+		}
+	}
+}
 
+void addTrieLetter(char letter, trieNode *onNode) {
+	
 }
 
 // Main Function
