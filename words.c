@@ -2,9 +2,23 @@
 #include <stdlib.h>
 #include <string.h>
 
+// Structure Signatures
+typedef struct Node trieNode;
+
+// Structures Definitions
+struct trieNode {
+	char letter;
+	trieNode *followingLetters;
+};
+
+// Function Signatures
 void printHelp();
 int uniqueLetters(int strlen, char *letters);
+trieNode *initTrie();
+void freeTrie(trieNode *trie);
+void addTrieLetter(char letter);
 
+// Function definitions
 void printHelp() {
 	printf(" This program solves the spelling bee.\n");
 	printf(" Please provide the letters for searching.\n");
@@ -24,15 +38,15 @@ int uniqueLetters(int len, char *letters) {
 	}
 
 	// compare each and every letter
-	int unique = 1; // remains true unless same letter found
+	int unique = 1;
 	for (int i = 0; i < len; i++) {
 		for (int j = 0; j < len; j++) {
 			if (i == j) {
 				// comparing the same letter skips to next loop
 				continue;
 			} else if (letters[i] == letters[j]) {
-				printf(" FOUND: letter %c and %c are the same.\n", letters[i], letters[j]);
-				unique = 0; // false
+				// printf(" FOUND: letter %c and %c are the same.\n", letters[i], letters[j]);
+				unique = 0; // set to false
 			}
 		}
 	}
@@ -40,9 +54,25 @@ int uniqueLetters(int len, char *letters) {
 	return unique;
 }
 
+trieNode *initTrie() {
+
+	return NULL;
+}
+
+void freeTrie(trieNode *trie) {
+
+}
+
+void addTrieLetter(char letter) {
+
+}
+
+// Main Function
 int main(int argc, char **argv) {
 	char *wordPath = "/usr/share/dict/words";
 	FILE *wordsFile = fopen(wordPath, "r");
+
+	char *arg = argv[1];
 
 	if (argc > 2) {
 		printf(" ERROR: Please only provide one argument!\n i.e. 'abcdef'\n Type help for more information\n");
@@ -51,8 +81,8 @@ int main(int argc, char **argv) {
 		printf(" ERROR: Please provide the letters to be used.\n i.e. 'abcdef'\n Type help for more information\n");
 		exit(-1);
 	} else {
+
 		// one argument was provided
-		char *arg = argv[1];
 		size_t argLength = strlen(arg);
 		if (strncmp(arg, "help", argLength) == 0) { // enter if same word
 			printHelp();
@@ -64,12 +94,11 @@ int main(int argc, char **argv) {
 			printf(" ERROR: Please provide 7 unique letters.\n");
 			exit(-1);
 		} else {
-			printf("Arguments provided %s\n", arg);
-			
+			printf(" ### Letters provided %s\n", arg);
 		}
 	}
 	
-	printf("Proceeding to program...\n");
+	printf(" ### Proceeding to program...\n");
 
 	// reading from word file
 	size_t lineBufferSize = 16; // words should be under 16
