@@ -1,7 +1,5 @@
 # small gitignore by nicholas
 
 *.o
-build
-build.sh
 
 .DS_store
