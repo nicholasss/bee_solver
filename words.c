@@ -41,20 +41,24 @@ int main(int argc, char **argv) {
 	FILE *wordsFile = fopen(wordPath, "r");
 
 	if (argc > 2) {
-		printf(" Please only provide one argument!\n i.e. 'abcdef'\n Type help for more information\n");
+		printf(" ERROR: Please only provide one argument!\n i.e. 'abcdef'\n Type help for more information\n");
 		exit(-1);
 	} else if (argc == 1) {
-		printf(" Please provide the letters to be used.\n i.e. 'abcdef'\n Type help for more information\n");
+		printf(" ERROR: Please provide the letters to be used.\n i.e. 'abcdef'\n Type help for more information\n");
 		exit(-1);
 	} else {
 		// one argument was provided
 		char *arg = argv[1];
 		size_t argLength = strlen(arg);
-		if (strncmp(arg, "help", argLength) == 0) {
+		if (strncmp(arg, "help", argLength) == 0) { // enter if same word
 			printHelp();
 			exit(1);
 		} else if (argLength != 7) {
-			printf("Please provide 7 letters.\n");
+			printf(" ERROR: Please provide 7 letters.\n");
+			exit(-1);
+		} else if (uniqueLetters(argLength, arg) == 0) { // enter if false
+			printf(" ERROR: Please provide 7 unique letters.\n");
+			exit(-1);
 		} else {
 			printf("Arguments provided %s\n", arg);
 			
