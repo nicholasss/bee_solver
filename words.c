@@ -2,25 +2,9 @@
 #include <stdlib.h>
 #include <string.h>
 
-// Structure Signatures
-typedef struct trieNode trieNode;
+#include "words.h"
+// #include "trie.h"
 
-// Structures Definitions
-struct trieNode {
-	char letter;
-	int numLetters;
-	trieNode *followingLetters;
-};
-
-// Function Signatures
-void printHelp();
-int uniqueLetters(int strlen, char *letters);
-trieNode *initTrie();
-void printTrie(trieNode *trie);
-void r_printTrie(trieNode *node, int numLetters);
-void freeTrie(trieNode *trie);
-void r_freeTrie(trieNode *node, int numLetters);
-void addTrieLetter(char letter, trieNode *onNode);
 
 // Function definitions
 void printHelp() {
@@ -56,78 +40,6 @@ int uniqueLetters(int len, char *letters) {
 	}
 	
 	return unique;
-}
-
-trieNode *initTrie() {
-	// Initialize with root of trie as '@'
-	size_t trieSize = sizeof(trieNode);
-	trieNode *trie = malloc(trieSize);
-	trie->letter = '@';
-	return trie;
-}
-
-void printTrie(trieNode *trie) {
-	// TODO: TEST
-	// prints tree
-	if (trie == NULL) {
-		return;
-	}
-
-	printf("{\n %c:\n [", trie->letter);
-	for (int i = 0; i < trie->numLetters; i++) {
-		r_printTrie(trie->followingLetters + i, trie->numLetters + i);
-	}
-}
-
-void r_printTrie(trieNode *node, int numLetters) {
-	// TODO: TEST
-	// prints the trie recursively
-
-	for (int i = 0; i < numLetters; i++) {
-		if (node->followingLetters + i == NULL) {
-			continue;
-		} else if (node->numLetters == 0) {
-			printf("letter \n");
-		} else {
-			r_printTrie(node->followingLetters, node->numLetters);
-		}
-	}
-}
-
-void freeTrie(trieNode *trie) {
-	// TODO: TEST
-	// Up to seven nodes under root, then undetermined branches
-	if (trie == NULL) {
-		return; 
-	}
-
-	for (int i = 0; i < 7; i++) {
-		// look through 7 nodes attached to root
-		if (trie->followingLetters + i == NULL) {
-			continue;
-		}
-		
-		r_freeTrie(trie->followingLetters, trie->numLetters);
-	}
-}
-
-void r_freeTrie(trieNode *node, int numLetters) {
-	// TODO: TEST
-	// is called recursively to free the nodes
-
-	for (int i = 0; i < numLetters; i++) {
-		if (node->followingLetters + i == NULL) {
-			continue;
-		} else if (node->numLetters == 0) {
-			free(node);
-		} else {
-			r_freeTrie(node->followingLetters, node->numLetters);
-		}
-	}
-}
-
-void addTrieLetter(char letter, trieNode *onNode) {
-	
 }
 
 // Main Function
