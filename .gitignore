@@ -1,5 +1,6 @@
 # small gitignore by nicholas
 
 *.o
+*.o.dSYM
 
 .DS_store
