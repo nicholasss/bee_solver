@@ -10,6 +10,7 @@ trieNode *initTrie() {
 	trieNode *trie = malloc(trieSize);
 
 	trie->letter = '@';
+	trie->numLetters = 0;
 	trie->followingLetters = malloc(sizeof(trieNode *) * 7);
 	return trie;
 }
@@ -86,24 +87,30 @@ void r_freeTrie(trieNode *node, int numLetters) {
 }
 
 trieNode *addTrieLetter(char letter, trieNode *onNode) {
-	// check if followingLetters array is initialized
-	if (onNode->followingLetters == NULL) {
-		onNode->followingLetters = malloc(sizeof(trieNode *) * 7);
-	}
-
 	int num = onNode->numLetters;
 	if (num > 7) {
 		printf("unable to add after the 7th letter\n");
 		return NULL;
 	}
+
+	// check if followingLetters array is initialized
+	if (onNode->followingLetters == NULL) {
+		onNode->followingLetters = malloc(sizeof(trieNode *) * 7);
+	}
+
 	trieNode *newNode = NULL;
 	if (onNode->followingLetters[num] == NULL) {
 		// num will always be the index for a new item
 		newNode = malloc(sizeof(trieNode));
 		newNode->followingLetters = malloc(sizeof(trieNode *) * 7);
 
+		// setting values after initializing
 		newNode->letter = letter;
 		newNode->numLetters = 0;
+
+		// update onNode after adding
+		onNode->followingLetters[num] = newNode;
+		onNode->numLetters++;
 	}
 
 	return newNode;
