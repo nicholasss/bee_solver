@@ -12,7 +12,6 @@ int main() {
 	trieNode *root = initTrie();
 
 	trieNode *a = addTrieLetter('a', root);
-
 	trieNode *s = addTrieLetter('s', a);
 
 	trieNode *b = addTrieLetter('b', root);
@@ -32,6 +31,13 @@ int main() {
 	assert(root->followingLetters[1]->letter == 'b');
 
 	printTrie(root);
+
+	// testing freeing the trie
+	freeTrie(root);
+	// if (root != NULL) {
+	// 	printf("%p\n", root);
+	// }
+	// assert(root == NULL);
 
 }
 

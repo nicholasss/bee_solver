@@ -16,8 +16,6 @@ trieNode *initTrie() {
 }
 
 void printTrie(trieNode *trie) {
-	// TODO: TEST
-	// prints tree
 	if (trie == NULL) {
 		return;
 	}
@@ -31,8 +29,6 @@ void printTrie(trieNode *trie) {
 }
 
 void r_printTrie(trieNode *node, int numLetters, int level) {
-	// TODO: TEST
-	// prints the trie recursively
 	if (node == NULL) {
 		return;
 	}
@@ -59,6 +55,8 @@ void freeTrie(trieNode *trie) {
 	// Up to seven nodes under root, then undetermined branches
 	if (trie == NULL) {
 		return; 
+	} else if (trie->followingLetters == NULL) {
+		return;
 	}
 
 	for (int i = 0; i < 7; i++) {
@@ -69,21 +67,55 @@ void freeTrie(trieNode *trie) {
 		
 		r_freeTrie(trie->followingLetters[i], trie->numLetters);
 	}
+
+	free(trie->followingLetters);
+	trie->followingLetters = NULL;
+	free(trie);
+	trie = NULL;
 }
 
 void r_freeTrie(trieNode *node, int numLetters) {
 	// TODO: TEST
-	// is called recursively to free the nodes
+	if (node == NULL) {
+		return;
+	}
+
+	if (node->numLetters == 0) {
+		freeNode(node);
+		return;
+	}
 
 	for (int i = 0; i < numLetters; i++) {
+		if (node->followingLetters == NULL) {
+			continue;
+		}
+
 		if (node->followingLetters[i] == NULL) {
 			continue;
-		} else if (node->numLetters == 0) {
-			free(node);
-		} else {
-			r_freeTrie(node->followingLetters[i], node->numLetters);
-		}
+		} 
+		
+		r_freeTrie(node->followingLetters[i], node->numLetters);
 	}
+
+	freeNode(node);
+}
+
+void freeNode(trieNode *node) {
+	if (node == NULL) {
+		return;
+	}
+
+	if (node->followingLetters == NULL) {
+		free(node);
+		node = NULL;
+		return;
+	}
+
+	free(node->followingLetters);
+	node->followingLetters = NULL;
+	
+	free(node);
+	node = NULL;
 }
 
 trieNode *addTrieLetter(char letter, trieNode *onNode) {
