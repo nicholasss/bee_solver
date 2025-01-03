@@ -16,6 +16,6 @@ void printTrie(trieNode *trie);
 void r_printTrie(trieNode *node, int numLetters, int level);
 void freeTrie(trieNode *trie);
 void r_freeTrie(trieNode *node, int numLetters);
-void addTrieLetter(char letter, trieNode *onNode);
+trieNode *addTrieLetter(char letter, trieNode *onNode);
 
 #endif

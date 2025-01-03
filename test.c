@@ -24,6 +24,15 @@ int main() {
 
 	node->numLetters += 1;
 	node->followingLetters[0] = a;
+	
+	trieNode *s = malloc(sizeof(trieNode));
+	s->letter = 's';
+	s->numLetters = 0;
+	s->followingLetters = NULL;
+
+	a->numLetters++;
+	a->followingLetters = malloc(sizeof(trieNode *) * 7);
+	a->followingLetters[0] = s;
 
 	trieNode *b = malloc(sizeof(trieNode));
 	b->letter = 'b';
@@ -32,7 +41,6 @@ int main() {
 
 	node->numLetters += 1;
 	node->followingLetters[1] = b;
-	// printf("%c\n", node->followingLetters[1]->letter);
 
 	assert(node->letter == '@');
 	assert(a->letter == 'a');
@@ -40,6 +48,7 @@ int main() {
 
 	assert(node->numLetters == 2);
 	assert(node->followingLetters[0]->letter == 'a');
+	assert(node->followingLetters[0]->followingLetters[0]->letter == 's');
 	assert(node->followingLetters[1]->letter == 'b');
 
 	printTrie(node);
