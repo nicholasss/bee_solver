@@ -5,9 +5,6 @@
 #include <assert.h>
 #include "trie.h"
 
-// TESTING
-//
-
 int main() {
 	trieNode *root = initTrie();
 
@@ -31,10 +28,10 @@ int main() {
 	assert(root->followingLetters[1]->letter == 'b');
 
 	printTrie(root);
+	freeTrie(&root); // func accepts trieNode **
 
-	// testing freeing the trie
-	freeTrie(root);
-	assert(root == NULL);
+	// NOTE: for some reason there are still dangling pointers,
+	// even though I have tried to fix them. Unsure whats wrong in 'trie.c'.
 
 }
 

@@ -50,81 +50,79 @@ void r_printTrie(trieNode *node, int numLetters, int level) {
 	}
 }
 
-void freeTrie(trieNode *trie) {
-	// TODO: TEST
-	// Up to seven nodes under root, then undetermined branches
-	if (trie == NULL) {
+void freeTrie(trieNode **trie) {
+	if (trie == NULL || *trie == NULL) {
 		// printf("Trie was null. Returning.\n");
 		return; 
-	} else if (trie->followingLetters == NULL) {
+	} else if ((*trie)->followingLetters == NULL) {
 		// printf("Trie's 'followingLetters' is null. Returning.\n");
 		return;
 	}
 
 	for (int i = 0; i < 7; i++) {
 		// look through 7 nodes attached to root
-		if (trie->followingLetters[i] == NULL) {
+		if ((*trie)->followingLetters[i] == NULL) {
 			// printf("Trie's %d following letter was null. Continuing.\n", i);
 			continue;
 		}
 		
-		r_freeTrie(trie->followingLetters[i], trie->numLetters);
+		r_freeTrie(&((*trie)->followingLetters[i]), (*trie)->numLetters);
 	}
 
 	// printf("Trie's graph was cleared.\n");
-	free(trie->followingLetters);
-	trie->followingLetters = NULL;
-	free(trie);
-	trie = NULL;
-	// printf("Trie was fully cleared\n");
+	free((*trie)->followingLetters);
+	(*trie)->followingLetters = NULL;
+
+	free(*trie);
+	*trie = NULL;
+	// printf("Trie was fully freed.\n");
 }
 
-void r_freeTrie(trieNode *node, int numLetters) {
-	// TODO: TEST
-	if (node == NULL) {
+void r_freeTrie(trieNode **node, int numLetters) {
+	if (node == NULL || *node == NULL) {
 		return;
 	}
-	// printf("Looking at '%c'.\n", node->letter);
+	// printf("Looking at '%c'.\n", (*node)->letter);
 
-	if (node->numLetters == 0) {
+	if ((*node)->numLetters == 0) {
 		// printf("Freeing '%c' final letter in sequence.\n", node->letter);
 		freeNode(node);
 		return;
 	}
 
 	for (int i = 0; i < numLetters; i++) {
-		if (node->followingLetters == NULL) {
+		if ((*node)->followingLetters == NULL) {
 			continue;
 		}
 
-		if (node->followingLetters[i] == NULL) {
+		if ((*node)->followingLetters[i] == NULL) {
 			continue;
 		} 
 		
 		// printf("Looking at '%c's %d letter.\n", node->letter, i);
-		r_freeTrie(node->followingLetters[i], node->numLetters);
+		r_freeTrie(&((*node)->followingLetters[i]), (*node)->numLetters);
 	}
 
-	// printf("Finally freeing '%c'.\n", node->letter);
 	freeNode(node);
 }
 
-void freeNode(trieNode *node) {
-	if (node == NULL) {
+void freeNode(trieNode **node) {
+	// printf("Finally freeing '%c'.\n", (*node)->letter);
+	if (node == NULL || *node == NULL) {
 		return;
 	}
 
-	if (node->followingLetters == NULL) {
-		free(node);
-		node = NULL;
+	if ((*node)->followingLetters == NULL) {
+		free(*node);
+		*node = NULL;
 		return;
 	}
 
-	free(node->followingLetters);
-	node->followingLetters = NULL;
+	free((*node)->followingLetters);
+	(*node)->followingLetters = NULL;
 	
-	free(node);
-	node = NULL;
+	free(*node);
+	*node = NULL;
 }
 
 trieNode *addTrieLetter(char letter, trieNode *onNode) {
