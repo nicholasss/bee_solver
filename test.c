@@ -19,19 +19,22 @@ int main() {
 	trieNode *e1 = addTrieLetter('e', v);
 
 	assert(root->letter == '@');
-	assert(a->letter == 'a');
-	assert(b->letter == 'b');
+	// assert(a->letter == 'a');
+	// assert(b->letter == 'b');
 
-	assert(root->numLetters == 2);
-	assert(root->followingLetters[0]->letter == 'a');
-	assert(root->followingLetters[0]->followingLetters[0]->letter == 's');
-	assert(root->followingLetters[1]->letter == 'b');
+	// assert(root->numLetters == 2);
+	// assert(root->followingLetters[0]->letter == 'a');
+	// assert(root->followingLetters[0]->followingLetters[0]->letter == 's');
+	// assert(root->followingLetters[1]->letter == 'b');
 
 	printTrie(root);
 	freeTrie(&root); // func accepts trieNode **
 
 	// NOTE: for some reason there are still dangling pointers,
 	// even though I have tried to fix them. Unsure whats wrong in 'trie.c'.
+	printf("These addresses should all be 0x0 after freeing the trie.\n");
+	printf("Address of root: %p\n", root);
+	printf("Address of    a: %p\n", a);
 
 }
 

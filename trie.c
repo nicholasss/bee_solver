@@ -8,6 +8,11 @@ trieNode *initTrie() {
 	// Initialize with root of trie as '@'
 	size_t trieSize = sizeof(trieNode);
 	trieNode *trie = malloc(trieSize);
+	if (trie == NULL) {
+		// malloc failed
+		printf("Malloc failed during Trie init.\n");
+		exit(-1);
+	}
 
 	trie->letter = '@';
 	trie->numLetters = 0;
@@ -92,11 +97,11 @@ void r_freeTrie(trieNode **node, int numLetters) {
 
 	for (int i = 0; i < numLetters; i++) {
 		if ((*node)->followingLetters == NULL) {
-			continue;
+			break; // break instead of return
 		}
 
 		if ((*node)->followingLetters[i] == NULL) {
-			continue;
+			break; // break instead of return
 		} 
 		
 		// printf("Looking at '%c's %d letter.\n", node->letter, i);
@@ -126,7 +131,17 @@ void freeNode(trieNode **node) {
 }
 
 trieNode *addTrieLetter(char letter, trieNode *onNode) {
-	int num = onNode->numLetters;
+	if (onNode == NULL) {
+		return NULL;
+	}
+
+	int num;
+	if (onNode != NULL) {
+		num = onNode->numLetters;
+	} else {
+		num = 0;
+	}
+
 	if (num > 7) {
 		printf("unable to add after the 7th letter\n");
 		return NULL;
@@ -135,13 +150,25 @@ trieNode *addTrieLetter(char letter, trieNode *onNode) {
 	// check if followingLetters array is initialized
 	if (onNode->followingLetters == NULL) {
 		onNode->followingLetters = malloc(sizeof(trieNode *) * 7);
+		if (onNode->followingLetters == NULL) {
+			printf("Malloc failed for argument onNode's following letters.\n");
+			exit(-1);
+		}
 	}
 
 	trieNode *newNode = NULL;
 	if (onNode->followingLetters[num] == NULL) {
 		// num will always be the index for a new item
 		newNode = malloc(sizeof(trieNode));
+		if (newNode == NULL) {
+			printf("Malloc failed for newNode\n");
+			exit(-1);
+		}
 		newNode->followingLetters = malloc(sizeof(trieNode *) * 7);
+		if (newNode->followingLetters == NULL) {
+			printf("Malloc failed for following letters of newNode\n");
+			exit(-1);
+		}
 
 		// setting values after initializing
 		newNode->letter = letter;
