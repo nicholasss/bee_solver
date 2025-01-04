@@ -1,5 +1,6 @@
 # small gitignore by nicholas
 
+words_alpha.txt
 *.o
 *.o.dSYM
 
