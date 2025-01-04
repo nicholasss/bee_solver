@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <stdbool.h>
 
 #include "words.h"
 // #include "trie.h"
@@ -12,6 +13,32 @@ void printHelp() {
 	printf(" Please provide the letters for searching.\n");
 	printf(" i.e. 'abcdef'\n");
 	printf(" Written by Nicholas Zingleman\n");
+}
+
+bool checkLettersInWord(char *letters, char *word) {
+	int wordLen = strlen(word);
+	if (wordLen < 4) {
+		return false;
+	}
+
+	for (int i = 0; i < wordLen; i++) {
+		bool match = false;
+		for (int j = 0; j < 7; j++) {
+			// for each letter provided (spelling bee)
+			// if the (word) letter does not match a (bee) letter
+			// then return false
+			if (word[i] == letters[j]) {
+				match = true;
+			}
+		}
+		
+		if (match == false) {
+			// printf("%s not a match due to %c.\n", word, word[i]);
+			return false;
+		}
+	}
+
+	return true;
 }
 
 int uniqueLetters(int len, char *letters) {
@@ -44,9 +71,6 @@ int uniqueLetters(int len, char *letters) {
 
 // Main Function
 int main(int argc, char **argv) {
-	char *wordPath = "/usr/share/dict/words";
-	FILE *wordsFile = fopen(wordPath, "r");
-
 	char *arg = argv[1];
 
 	if (argc > 2) {
@@ -75,16 +99,24 @@ int main(int argc, char **argv) {
 	
 	printf(" ### Proceeding to program...\n");
 
+	char *wordPath = "./words_alpha.txt";
+	FILE *wordsFile = fopen(wordPath, "r");
+
 	// reading from word file
-	size_t lineBufferSize = 16; // words should be under 16
-	char *lineBuffer = malloc(lineBufferSize);
-	
-	int count = 1;
-	while(fgets(lineBuffer, lineBufferSize, wordsFile)) {
-		// printf("word %d: %s", count, lineBuffer);
-		// count += 1;
+	size_t lineBufferSize = 32; // words should be under 16
+	char *wordBuffer = malloc(lineBufferSize);
+
+	while(fgets(wordBuffer, lineBufferSize, wordsFile)) {
+		// removing newlines from lineBuffer
+		wordBuffer[strcspn(wordBuffer, "\n\r")] = 0;
+
+		bool valid = checkLettersInWord(arg, wordBuffer);
+		if (valid) {
+			printf("%s\n", wordBuffer);
+		}
+
 	}
 
-	// free(buffer);
+	free(wordBuffer);
 	return 0;
 }
