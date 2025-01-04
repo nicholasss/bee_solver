@@ -34,10 +34,7 @@ int main() {
 
 	// testing freeing the trie
 	freeTrie(root);
-	// if (root != NULL) {
-	// 	printf("%p\n", root);
-	// }
-	// assert(root == NULL);
+	assert(root == NULL);
 
 }
 

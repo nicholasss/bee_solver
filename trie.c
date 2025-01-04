@@ -21,7 +21,7 @@ void printTrie(trieNode *trie) {
 	}
 
 	int level = 1;
-	printf("{ root:\n");
+	printf("{\n root:\n");
 	for (int i = 0; i < trie->numLetters; i++) {
 		r_printTrie(trie->followingLetters[i], trie->numLetters + i, level);
 	}
@@ -54,24 +54,29 @@ void freeTrie(trieNode *trie) {
 	// TODO: TEST
 	// Up to seven nodes under root, then undetermined branches
 	if (trie == NULL) {
+		// printf("Trie was null. Returning.\n");
 		return; 
 	} else if (trie->followingLetters == NULL) {
+		// printf("Trie's 'followingLetters' is null. Returning.\n");
 		return;
 	}
 
 	for (int i = 0; i < 7; i++) {
 		// look through 7 nodes attached to root
 		if (trie->followingLetters[i] == NULL) {
+			// printf("Trie's %d following letter was null. Continuing.\n", i);
 			continue;
 		}
 		
 		r_freeTrie(trie->followingLetters[i], trie->numLetters);
 	}
 
+	// printf("Trie's graph was cleared.\n");
 	free(trie->followingLetters);
 	trie->followingLetters = NULL;
 	free(trie);
 	trie = NULL;
+	// printf("Trie was fully cleared\n");
 }
 
 void r_freeTrie(trieNode *node, int numLetters) {
@@ -79,8 +84,10 @@ void r_freeTrie(trieNode *node, int numLetters) {
 	if (node == NULL) {
 		return;
 	}
+	// printf("Looking at '%c'.\n", node->letter);
 
 	if (node->numLetters == 0) {
+		// printf("Freeing '%c' final letter in sequence.\n", node->letter);
 		freeNode(node);
 		return;
 	}
@@ -94,9 +101,11 @@ void r_freeTrie(trieNode *node, int numLetters) {
 			continue;
 		} 
 		
+		// printf("Looking at '%c's %d letter.\n", node->letter, i);
 		r_freeTrie(node->followingLetters[i], node->numLetters);
 	}
 
+	// printf("Finally freeing '%c'.\n", node->letter);
 	freeNode(node);
 }
 
